@@ -2,60 +2,53 @@ using UnityEngine;
 
 namespace com.homemade.pattern.singleton
 {
-    public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public class MonoSingleton<T> : MonoEntity where T : MonoBehaviour
     {
-        private static T instance;
-
-        private static readonly object _lock = new object();
+        protected static T _instance = null;
 
         public static T Instance
         {
             get
             {
-                if (applicationIsQuitting) return null;
-
-                lock (_lock)
+                if (_instance == null)
                 {
-                    if (instance == null)
-                    {
-                        instance = (T)FindObjectOfType(typeof(T));
+                    _instance = FindObjectOfType(typeof(T)) as T;
+                    if (_instance == null)
+                        _instance = new GameObject(typeof(T).ToString(), typeof(T)).GetComponent<T>();
+                }
+                return _instance;
+            }
+        }
 
-                        if (FindObjectsOfType(typeof(T)).Length > 1)
-                            return instance;
+        protected sealed override void Awake()
+        {
+            if (_instance == null)
+            {
+                _instance = this as T;
 
-                        if (instance == null)
-                        {
-                            GameObject singletonPrefab = null;
-                            GameObject singleton = null;
-
-                            singletonPrefab = (GameObject)Resources.Load(typeof(T).ToString(), typeof(GameObject));
-
-                            if (singletonPrefab != null)
-                            {
-                                singleton = Instantiate(singletonPrefab);
-                                instance = singleton.GetComponent<T>();
-                            }
-                            else
-                            {
-                                singleton = new GameObject();
-                                instance = singleton.AddComponent<T>();
-                            }
-
-                            singleton.name = typeof(T).ToString();
-                            DontDestroyOnLoad(singleton);
-                        }
-                    }
-
-                    return instance;
+                OnInit();
+            }
+            else
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    DestroyImmediate(gameObject);
                 }
             }
         }
 
-        private static bool applicationIsQuitting = false;
-        public virtual void OnDestroy()
+        protected virtual void OnInit()
         {
-            applicationIsQuitting = true;
+
+        }
+
+        public virtual new void OnDestroy()
+        {
+
         }
     }
-
 }

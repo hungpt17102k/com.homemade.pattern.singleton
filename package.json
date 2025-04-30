@@ -1,12 +1,9 @@
 {
   "name": "com.homemade.pattern.singleton",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "com.homemade.pattern.singleton",
-  "description": "Small package about controll the audio",
+  "description": "Small package about singleton",
   "unity": "2021.1",
-  "documentationUrl": "https://example.com/",
-  "changelogUrl": "https://example.com/changelog.html",
-  "licensesUrl": "https://example.com/licensing.html",
   "author": {
     "name": "HomeMadeST",
     "email": "homemadegame102@gmail.com"
