@@ -1,6 +1,6 @@
 {
   "name": "com.homemade.pattern.singleton",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "com.homemade.pattern.singleton",
   "description": "Small package about singleton",
   "unity": "2021.1",
