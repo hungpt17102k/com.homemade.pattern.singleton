@@ -5,13 +5,15 @@ namespace com.homemade.pattern.singleton
     public class MonoSingleton<T> : MonoEntity where T : MonoBehaviour
     {
         protected static T _instance = null;
-        private static bool isInited;
+        protected static bool applicationIsQuitting = false;
 
         public static T Instance
         {
             get
             {
-                if (_instance == null && !isInited)
+                if (applicationIsQuitting) return null;
+
+                if (_instance == null)
                 {
                     _instance = FindObjectOfType(typeof(T)) as T;
                     if (_instance == null)
@@ -27,7 +29,6 @@ namespace com.homemade.pattern.singleton
             {
                 _instance = this as T;
 
-                isInited = true;
                 OnInit();
             }
             else
@@ -46,11 +47,6 @@ namespace com.homemade.pattern.singleton
         protected virtual void OnInit()
         {
 
-        }
-
-        protected override void OnDestroy()
-        {
-            isInited = false;
         }
     }
 }

@@ -8,5 +8,10 @@ namespace com.homemade.pattern.singleton
 
             DontDestroyOnLoad(gameObject);
         }
+
+        protected override void OnDestroy()
+        {
+            applicationIsQuitting = true;
+        }
     }
 }
